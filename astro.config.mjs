@@ -5,6 +5,7 @@ import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config.ts";
 
 export default defineConfig({
-  site: SITE.url,
+  site: "https://bappidatta.github.io",
+  base: "/portfolio",
   integrations: [sitemap()],
 });
