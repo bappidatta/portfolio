@@ -3,7 +3,7 @@
  * All professional details are drawn from public/Bappi_Datta_Resume.pdf.
  */
 export const SITE = {
-  url: "https://example.com",
+  url: "https://bappidatta.github.io",
   name: "Bappi Datta",
   title: "Full-Stack Software Engineer",
   description:

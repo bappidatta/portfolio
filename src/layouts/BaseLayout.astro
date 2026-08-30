@@ -31,7 +31,8 @@ const personJsonLd = {
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={new URL('/favicon.svg', SITE.url).href} />
+    <link rel="shortcut icon" type="image/svg+xml" href={new URL('/favicon.svg', SITE.url).href} />
     <link rel="alternate" type="application/rss+xml" title="Blog RSS" href="/rss.xml" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={pageTitle} />
