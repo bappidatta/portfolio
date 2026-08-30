@@ -6,6 +6,5 @@ import { SITE } from "./src/config.ts";
 
 export default defineConfig({
   site: "https://bappidatta.github.io",
-  base: "/portfolio",
   integrations: [sitemap()],
 });
