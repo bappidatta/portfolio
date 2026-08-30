@@ -1,0 +1,164 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE, SOCIALS } from '../config';
+const email = SOCIALS.find((s) => s.icon === 'mail')?.url.replace('mailto:', '') ?? '';
+---
+
+<BaseLayout title="Contact" description={`Get in touch with ${SITE.name} — ${SITE.title}.`}>
+  <header class="page-head reveal">
+    <p class="eyebrow">Contact</p>
+    <h1>Have a challenging<br />engineering problem?</h1>
+    <p class="muted">
+      I'm seeking new opportunities to apply my skills and experience to challenging,
+      rewarding projects. Tell me what you're building.
+    </p>
+  </header>
+
+  <div class="contact-grid reveal">
+    <form
+      class="card form"
+      action="https://formspree.io/f/YOUR_FORM_ID"
+      method="POST"
+    >
+      <label>
+        <span>Name</span>
+        <input type="text" name="name" required autocomplete="name" />
+      </label>
+      <label>
+        <span>Email</span>
+        <input type="email" name="email" required autocomplete="email" />
+      </label>
+      <label>
+        <span>Message</span>
+        <textarea name="message" rows="6" required placeholder="What are you building?"></textarea>
+      </label>
+      <button class="btn" type="submit">Send message →</button>
+    </form>
+
+    <aside class="channels">
+      <div class="channel card">
+        <h3 class="mono">Direct</h3>
+        {email && <a class="email" href={`mailto:${email}`}>{email}</a>}
+        <p class="muted small">I'll get back to you as soon as I can.</p>
+      </div>
+      <div class="channel card">
+        <h3 class="mono">Elsewhere</h3>
+        <ul>
+          {
+            SOCIALS.filter((s) => s.icon !== 'mail').map((s) => (
+              <li>
+                <a href={s.url} target={s.url.startsWith('http') ? '_blank' : undefined} rel="noopener">
+                  {s.name} <span aria-hidden="true">↗</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div class="channel card status">
+        <h3 class="mono">Status</h3>
+        <p class="muted small">
+          <span class="status-dot" aria-hidden="true"></span> {SITE.status}
+        </p>
+        <p class="muted small">{SITE.location} · {SITE.timezone}</p>
+      </div>
+    </aside>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head {
+    padding: 2.5rem 0 2.5rem;
+  }
+  .page-head h1 {
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    margin: 0 0 0.9rem;
+  }
+  .page-head .muted {
+    max-width: 52ch;
+    margin: 0;
+    font-size: 1.05rem;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    padding: 1.75rem;
+  }
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+  input,
+  textarea {
+    font: inherit;
+    font-size: 0.95rem;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: var(--bg-soft);
+    color: var(--text);
+    transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+  }
+  input:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+  textarea { resize: vertical; min-height: 120px; }
+  button { align-self: flex-start; }
+
+  .channels {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .channel { padding: 1.25rem 1.4rem; }
+  .channel h3 {
+    margin: 0 0 0.75rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-faint);
+  }
+  .email {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
+  .small { font-size: 0.82rem; margin: 0.25rem 0 0; }
+  .channel ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .channel ul a {
+    font-size: 0.9rem;
+    display: inline-flex;
+    gap: 0.4rem;
+    align-items: baseline;
+  }
+  .status .small { display: flex; align-items: center; gap: 0.5rem; }
+
+  @media (max-width: 800px) {
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+</style>

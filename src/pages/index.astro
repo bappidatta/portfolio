@@ -1,0 +1,442 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { SITE, HERO, PROFILE, SKILLS, PRINCIPLES } from '../config';
+import { getCollection } from 'astro:content';
+
+const featured = (await getCollection('projects'))
+  .filter((p) => p.data.featured)
+  .sort((a, b) => b.data.order - a.data.order)
+  .slice(0, 3);
+---
+
+<BaseLayout>
+  {/* ============ HERO ============ */}
+  <section class="hero reveal">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="hero-prompt mono">
+          <span class="dollar">$</span> {HERO.prompt}
+          <span class="caret" aria-hidden="true"></span>
+        </p>
+        <h1>{HERO.headline}</h1>
+        <p class="hero-focus">{HERO.focus}</p>
+        <div class="hero-meta mono">
+          <span><span class="status-dot" aria-hidden="true"></span> {SITE.status}</span>
+          <span class="sep">·</span>
+          <span>{SITE.location} ({SITE.timezone})</span>
+        </div>
+        <div class="cta">
+          <a class="btn" href="/contact">Get in touch <span aria-hidden="true">→</span></a>
+          <a class="btn secondary" href={SITE.resumeUrl} download>Download résumé</a>
+        </div>
+      </div>
+
+      {/* Technical visualization: system diagram card */}
+      <aside class="hero-panel card" aria-hidden="true">
+        <div class="panel-head mono">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span>system.astro</span>
+        </div>
+        <div class="panel-body mono">
+          <div class="node-row">
+            <div class="node">react</div>
+            <div class="edge"></div>
+            <div class="node">asp.net core</div>
+          </div>
+          <div class="edge vertical"></div>
+          <div class="node-row">
+            <div class="node accent">ef core</div>
+            <div class="edge"></div>
+            <div class="node">sql server</div>
+          </div>
+          <div class="edge vertical"></div>
+          <div class="node-row">
+            <div class="node">azure</div>
+            <div class="edge"></div>
+            <div class="node">ci/ccd</div>
+          </div>
+          <div class="panel-stats">
+            <div><span class="k">exp</span><span class="v">14+ yrs</span></div>
+            <div><span class="k">domains</span><span class="v">ERP · FinTech</span></div>
+            <div><span class="k">process</span><span class="v">CMMI L5</span></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  {/* ============ ABOUT / ENGINEERING PROFILE ============ */}
+  <section class="section reveal">
+    <p class="eyebrow">01 · Profile</p>
+    <h2>Delivery-focused, full-stack, and adaptable.</h2>
+    <div class="about-grid">
+      <div class="about-copy">
+        <p class="philosophy">{PROFILE.philosophy}</p>
+        <ul class="systems mono">
+          {PROFILE.systems.map((s) => <li>{s}</li>)}
+        </ul>
+      </div>
+      <div class="expertise">
+        {PROFILE.expertise.map((e) => (
+          <div class="expertise-item">
+            <strong>{e.area}</strong>
+            <span class="muted">{e.note}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><span class="stat-num">{PROFILE.years}</span><span class="muted">years building production systems</span></div>
+      <div class="stat"><span class="stat-num">5</span><span class="muted">companies — from co-founder to senior engineer</span></div>
+      <div class="stat"><span class="stat-num">2</span><span class="muted">domains delivered: ERP & FinTech</span></div>
+    </div>
+  </section>
+
+  {/* ============ SKILLS ============ */}
+  <section class="section reveal">
+    <p class="eyebrow">02 · Stack</p>
+    <h2>Technologies, organized by intent.</h2>
+    <div class="skills-grid">
+      {
+        SKILLS.map((group) => (
+          <div class="skill-group card">
+            <h3 class="mono">{group.category}</h3>
+            <div class="skill-items">
+              {group.items.map((s) => <span class="tag">{s}</span>)}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* ============ FEATURED PROJECTS ============ */}
+  <section class="section reveal">
+    <p class="eyebrow">03 · Selected work</p>
+    <h2>Systems I've delivered.</h2>
+    <div class="projects-grid">
+      {
+        featured.map((p) => (
+          <ProjectCard
+            title={p.data.title}
+            description={p.data.description}
+            tags={p.data.tags}
+            demoUrl={p.data.demoUrl}
+            repoUrl={p.data.repoUrl}
+          />
+        ))
+      }
+    </div>
+    <p class="all-link"><a class="btn secondary" href="/projects">All projects →</a></p>
+  </section>
+
+  {/* ============ ENGINEERING PRINCIPLES ============ */}
+  <section class="section reveal">
+    <p class="eyebrow">04 · How I think</p>
+    <h2>Engineering principles.</h2>
+    <div class="principles-grid">
+      {
+        PRINCIPLES.map((p, i) => (
+          <div class="principle card interactive">
+            <span class="principle-num mono">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{p.title}</h3>
+            <p class="muted">{p.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* ============ CONTACT CTA ============ */}
+  <section class="section reveal">
+    <div class="cta-panel card">
+      <p class="eyebrow">05 · Contact</p>
+      <h2>Have a challenging engineering problem?</h2>
+      <p class="muted">
+        I'm seeking new opportunities to apply my skills and experience to challenging,
+        rewarding projects — from ERP and FinTech to modern web platforms.
+      </p>
+      <div class="cta">
+        <a class="btn" href="/contact">Start a conversation</a>
+        <a class="btn secondary" href="mailto:bappi.sust@gmail.com">bappi.sust@gmail.com</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ---- Hero ---- */
+  .hero {
+    padding: 4.5rem 0 1rem;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  .hero-prompt {
+    color: var(--text-faint);
+    font-size: 0.85rem;
+    margin: 0 0 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .dollar { color: var(--green); }
+  .caret {
+    width: 8px;
+    height: 15px;
+    background: var(--accent);
+    animation: blink 1.1s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  h1 {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    margin: 0 0 1.1rem;
+    font-weight: 700;
+    background: linear-gradient(180deg, var(--text), color-mix(in srgb, var(--text) 72%, var(--bg)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-focus {
+    max-width: 52ch;
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    margin: 0 0 1.25rem;
+  }
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin: 0 0 1.75rem;
+    flex-wrap: wrap;
+  }
+  .hero-meta .sep { color: var(--text-faint); }
+  .cta {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  /* Hero panel — system diagram */
+  .hero-panel { padding: 0; overflow: hidden; }
+  .panel-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.72rem;
+    color: var(--text-faint);
+  }
+  .dots { display: flex; gap: 5px; }
+  .dots i {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--border-strong);
+  }
+  .panel-body {
+    padding: 1.5rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.78rem;
+  }
+  .node-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    justify-content: center;
+  }
+  .node {
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: var(--bg-soft);
+    color: var(--text-muted);
+  }
+  .node.accent {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-dim);
+  }
+  .edge {
+    flex: 0 0 28px;
+    height: 1px;
+    background: var(--border-strong);
+    position: relative;
+  }
+  .edge.vertical {
+    flex: none;
+    width: 1px;
+    height: 18px;
+    margin: 2px 0;
+  }
+  .panel-stats {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+    width: 100%;
+    justify-content: space-around;
+  }
+  .panel-stats > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    text-align: center;
+  }
+  .panel-stats .k {
+    color: var(--text-faint);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .panel-stats .v { color: var(--text); font-size: 0.95rem; }
+
+  /* ---- About ---- */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 2.5rem;
+    margin-bottom: 2rem;
+  }
+  .philosophy {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    margin: 0 0 1.5rem;
+    color: var(--text);
+  }
+  .systems {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+  .systems li::before {
+    content: "▸";
+    color: var(--accent);
+    margin-right: 0.6rem;
+  }
+  .expertise {
+    display: flex;
+    flex-direction: column;
+  }
+  .expertise-item {
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .expertise-item:first-child { padding-top: 0.25rem; }
+  .expertise-item:last-child { border-bottom: none; }
+  .expertise-item strong { font-size: 0.95rem; }
+  .expertise-item span { font-size: 0.85rem; }
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .stat {
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--card);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .stat-num {
+    font-family: var(--font-mono);
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--accent);
+  }
+  .stat .muted { font-size: 0.8rem; }
+
+  /* ---- Skills ---- */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+    gap: 1rem;
+  }
+  .skill-group { padding: 1.25rem; }
+  .skill-group h3 {
+    margin: 0 0 0.85rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-faint);
+  }
+  .skill-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  /* ---- Projects ---- */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 1rem;
+  }
+  .all-link { margin-top: 1.5rem; }
+
+  /* ---- Principles ---- */
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .principle { padding: 1.4rem; }
+  .principle-num {
+    color: var(--accent);
+    font-size: 0.75rem;
+    display: block;
+    margin-bottom: 0.6rem;
+  }
+  .principle h3 { margin: 0 0 0.5rem; font-size: 1rem; }
+  .principle p { margin: 0; font-size: 0.875rem; line-height: 1.6; }
+
+  /* ---- Contact CTA ---- */
+  .cta-panel {
+    padding: 2.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    background:
+      radial-gradient(ellipse 60% 80% at 50% 0%, var(--accent-dim), transparent),
+      var(--card);
+  }
+  .cta-panel h2 { margin: 0; }
+  .cta-panel .muted { max-width: 46ch; margin: 0; }
+  .cta-panel .cta { margin-top: 0.75rem; }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-panel { max-width: 420px; }
+    .about-grid { grid-template-columns: 1fr; }
+    .principles-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .hero { padding-top: 3rem; }
+    .stat-row { grid-template-columns: 1fr; }
+    .principles-grid { grid-template-columns: 1fr; }
+    .cta-panel { padding: 1.75rem 1.25rem; }
+  }
+</style>

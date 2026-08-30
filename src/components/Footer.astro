@@ -1,0 +1,80 @@
+---
+import { SITE, SOCIALS } from '../config';
+const year = new Date().getFullYear();
+---
+
+<footer>
+  <div class="inner">
+    <div class="left">
+      <span class="mono brand"><span class="mark">◆</span>{SITE.name}</span>
+      <p class="muted">Full-stack engineer — .NET, React, SQL Server. ERP & FinTech delivered on time, on budget.</p>
+    </div>
+    <nav class="socials" aria-label="Social links">
+      {
+        SOCIALS.map((s) => (
+          <a href={s.url} rel="me noopener" target={s.url.startsWith('http') ? '_blank' : undefined}>
+            {s.name}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+  <div class="bottom mono">
+    <span>© {year} {SITE.name}</span>
+    <span>Built with Astro · Static · 0 JS frameworks</span>
+  </div>
+</footer>
+
+<style>
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 1.5rem 2rem;
+    background: var(--bg-soft);
+  }
+  .inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .brand {
+    color: var(--text);
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .mark { color: var(--accent); font-size: 0.7rem; }
+  .left p {
+    margin: 0.5rem 0 0;
+    font-size: 0.875rem;
+  }
+  .socials {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .socials a {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+  .socials a:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .bottom {
+    max-width: var(--max-width);
+    margin: 2rem auto 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    font-size: 0.72rem;
+    color: var(--text-faint);
+  }
+</style>

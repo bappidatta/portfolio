@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('projects')).sort(
+  (a, b) => b.data.order - a.data.order
+);
+---
+
+<BaseLayout title="Projects" description="Systems, products, and open-source work — engineered end to end.">
+  <header class="page-head reveal">
+    <p class="eyebrow">Selected work</p>
+    <h1>Projects</h1>
+    <p class="muted">
+      Things I've built — each one a system with real constraints, trade-offs, and outcomes.
+    </p>
+  </header>
+
+  <div class="grid reveal">
+    {
+      projects.map((p, i) => (
+        <ProjectCard
+          index={i + 1}
+          title={p.data.title}
+          description={p.data.description}
+          tags={p.data.tags}
+          demoUrl={p.data.demoUrl}
+          repoUrl={p.data.repoUrl}
+        />
+      ))
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head {
+    padding: 2.5rem 0 2rem;
+  }
+  .page-head h1 {
+    font-size: 2.4rem;
+    margin: 0 0 0.75rem;
+  }
+  .page-head .muted {
+    max-width: 52ch;
+    margin: 0;
+    font-size: 1.05rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    gap: 1rem;
+  }
+</style>

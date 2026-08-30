@@ -1,0 +1,231 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE, EXPERIENCE, EDUCATION, SKILLS, COURSES, AWARDS } from '../config';
+---
+
+<BaseLayout title="Experience" description={`Engineering experience of ${SITE.name}, ${SITE.title}.`}>
+  <header class="page-head reveal">
+    <p class="eyebrow">Track record</p>
+    <div class="head-row">
+      <h1>Experience</h1>
+      <a class="btn secondary" href={SITE.resumeUrl} download>Download PDF</a>
+    </div>
+    <p class="muted">What I built, what I owned, and what changed because of it.</p>
+  </header>
+
+  <section class="section reveal">
+    <h2>Engineering timeline</h2>
+    <ol class="timeline">
+      {
+        EXPERIENCE.map((job) => (
+          <li class="entry">
+            <div class="marker" aria-hidden="true" />
+            <div class="entry-card card">
+              <div class="row">
+                <h3>{job.role} <span class="muted">· {job.company}</span></h3>
+                <span class="period mono">{job.period}</span>
+              </div>
+              <p class="location mono muted">{job.location}</p>
+              <p class="summary muted">{job.summary}</p>
+              <ul class="outcomes">
+                {job.points.map((p) => <li>{p}</li>)}
+              </ul>
+              <div class="stack">
+                {job.stack.map((s) => <span class="tag">{s}</span>)}
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="section reveal">
+    <h2>Stack</h2>
+    <div class="skills-grid">
+      {
+        SKILLS.map((group) => (
+          <div class="skill-group card">
+            <h3 class="mono">{group.category}</h3>
+            <div class="skill-items">
+              {group.items.map((s) => <span class="tag">{s}</span>)}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section reveal">
+    <h2>Education</h2>
+    {
+      EDUCATION.map((e) => (
+        <div class="entry card edu">
+          <div class="row">
+            <h3>{e.degree} <span class="muted">· {e.school}</span></h3>
+            <span class="period mono">{e.period}</span>
+          </div>
+          {e.location && <p class="location mono muted">{e.location}</p>}
+        </div>
+      ))
+    }
+  </section>
+
+  <section class="section reveal">
+    <h2>Courses</h2>
+    {
+      COURSES.map((c) => (
+        <div class="entry card edu">
+          <div class="row">
+            <h3>{c.title} <span class="muted">· {c.provider}</span></h3>
+            <span class="period mono">{c.period}</span>
+          </div>
+          {c.location && <p class="location mono muted">{c.location}</p>}
+        </div>
+      ))
+    }
+  </section>
+
+  <section class="section reveal">
+    <h2>Awards</h2>
+    {
+      AWARDS.map((a) => (
+        <div class="entry card edu">
+          <div class="row">
+            <h3>{a.title} <span class="muted">· {a.org}</span></h3>
+            <span class="period mono">{a.period}</span>
+          </div>
+        </div>
+      ))
+    }
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    padding: 2.5rem 0 0.5rem;
+  }
+  .head-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .page-head h1 {
+    font-size: 2.4rem;
+    margin: 0 0 0.75rem;
+  }
+  .page-head .muted {
+    max-width: 52ch;
+    margin: 0;
+    font-size: 1.05rem;
+  }
+
+  /* Timeline */
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+  .entry {
+    position: relative;
+    padding-left: 2.25rem;
+    margin-bottom: 1.25rem;
+  }
+  .entry:last-child { margin-bottom: 0; }
+  .marker {
+    position: absolute;
+    left: 0;
+    top: 1.75rem;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 10px var(--accent-glow);
+  }
+  .entry::before {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 2.4rem;
+    bottom: -1.25rem;
+    width: 1px;
+    background: var(--border-strong);
+  }
+  .entry:last-child::before { display: none; }
+  .entry-card { padding: 1.5rem 1.75rem; }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  h3 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  h3 .muted { font-weight: 400; }
+  .period {
+    font-size: 0.75rem;
+    color: var(--text-faint);
+  }
+  .summary {
+    margin: 0.5rem 0 0;
+    font-size: 0.9rem;
+  }
+  .location {
+    margin: 0.25rem 0 0;
+    font-size: 0.72rem;
+  }
+  .outcomes {
+    margin: 1rem 0 0;
+    padding-left: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+  }
+  .outcomes li::marker {
+    color: var(--accent);
+  }
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1.1rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Skills */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+    gap: 1rem;
+  }
+  .skill-group { padding: 1.25rem; }
+  .skill-group h3 {
+    margin: 0 0 0.85rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-faint);
+  }
+  .skill-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .edu { padding: 1.25rem 1.75rem; }
+
+  @media (max-width: 600px) {
+    .entry { padding-left: 1.5rem; }
+    .entry-card { padding: 1.25rem; }
+  }
+</style>

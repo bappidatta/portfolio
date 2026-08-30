@@ -1,0 +1,220 @@
+---
+import { SITE } from '../config';
+
+const links = [
+  { href: '/projects', label: 'Projects' },
+  { href: '/resume', label: 'Experience' },
+  { href: '/blog', label: 'Writing' },
+];
+const current = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<header>
+  <nav>
+    <a class="brand mono" href="/" aria-label="Home">
+      <span class="brand-mark">◆</span>{SITE.name.toLowerCase().replace(/\s+/g, '.')}
+    </a>
+    <ul id="nav-links">
+      {
+        links.map((l) => (
+          <li>
+            <a href={l.href} aria-current={current === l.href ? 'page' : undefined}>
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="actions">
+      <button id="theme-toggle" aria-label="Toggle color theme" title="Toggle theme">
+        <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+        </svg>
+        <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+      </button>
+      <button id="menu-toggle" class="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+        <svg class="icon-menu" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+        <svg class="icon-close" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<style>
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 78%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0.7rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  .brand {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  .brand:hover { color: var(--text); }
+  .brand-mark {
+    color: var(--accent);
+    font-size: 0.7rem;
+  }
+  ul {
+    display: flex;
+    gap: 0.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+  }
+  ul a {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    padding: 0.35rem 0.7rem;
+    border-radius: var(--radius-sm);
+    transition: color var(--dur-fast) ease, background var(--dur-fast) ease;
+  }
+  ul a:hover {
+    color: var(--text);
+    background: var(--bg-soft);
+    text-decoration: none;
+  }
+  ul a[aria-current='page'] {
+    color: var(--accent);
+    background: var(--accent-dim);
+  }
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  #theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color var(--dur-fast) ease, border-color var(--dur-fast) ease;
+  }
+  #theme-toggle:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
+  }
+  .icon-sun { display: none; }
+  .icon-moon { display: block; }
+  :global(html.light) .icon-sun { display: block; }
+  :global(html.light) .icon-moon { display: none; }
+
+  /* Mobile menu toggle — hidden on desktop */
+  .menu-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color var(--dur-fast) ease, border-color var(--dur-fast) ease;
+  }
+  .menu-toggle:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
+  }
+  .icon-close { display: none; }
+  .menu-toggle[aria-expanded='true'] .icon-menu { display: none; }
+  .menu-toggle[aria-expanded='true'] .icon-close { display: block; }
+
+  @media (max-width: 720px) {
+    nav { gap: 0.75rem; padding: 0.7rem 1rem; }
+    .actions { margin-left: auto; }
+    .brand { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .menu-toggle { display: inline-flex; flex-shrink: 0; }
+
+    /* Dropdown panel below the bar */
+    ul {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      gap: 0.25rem;
+      padding: 0.75rem 1.5rem 1rem;
+      background: color-mix(in srgb, var(--bg) 96%, transparent);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    ul.open { display: flex; }
+    ul a {
+      display: block;
+      padding: 0.6rem 0.75rem;
+      font-size: 0.95rem;
+    }
+  }
+</style>
+
+<script>
+  const btn = document.getElementById('theme-toggle')!;
+  btn.addEventListener('click', () => {
+    // Dark is default (no class); light adds .light
+    const light = document.documentElement.classList.toggle('light');
+    localStorage.setItem('theme', light ? 'light' : 'dark');
+  });
+
+  // Mobile navigation menu
+  const menuBtn = document.getElementById('menu-toggle');
+  const navLinks = document.getElementById('nav-links');
+  if (menuBtn && navLinks) {
+    const closeMenu = () => {
+      navLinks.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    };
+    menuBtn.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', String(open));
+    });
+    // Close after tapping a link
+    navLinks.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) closeMenu();
+    });
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      if (!menuBtn.contains(e.target as Node) && !navLinks.contains(e.target as Node)) {
+        closeMenu();
+      }
+    });
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMenu();
+    });
+  }
+</script>

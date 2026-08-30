@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Not Found" description="Page not found.">
+  <div class="center">
+    <p class="mono code">ERR 404 · route not resolved</p>
+    <h1>This page doesn't exist.</h1>
+    <p class="muted">The resource you requested was not found on this server.</p>
+    <a class="btn" href="/">Back to index</a>
+  </div>
+</BaseLayout>
+
+<style>
+  .center {
+    text-align: center;
+    padding: 6rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .code {
+    color: var(--accent);
+    font-size: 0.8rem;
+    background: var(--accent-dim);
+    border: 1px solid var(--border);
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+  }
+  h1 {
+    font-size: 2.2rem;
+    margin: 0;
+  }
+  .muted { margin: 0; }
+</style>
